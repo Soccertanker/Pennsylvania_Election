@@ -36,13 +36,17 @@ total_ballots_counted = 0
 
 for i, county_data in full_data.iterrows():
     dem_voters = county_data["democratic_voters"]
+    repub_voters = county_data["republican_voters"]
     tot_voters = county_data["total_voters"]
-    dem_percent = (dem_voters + ((tot_voters - dem_voters) / 5)) / tot_voters
+    dem_percent = dem_voters / tot_voters
+    repub_percent = repub_voters / tot_voters
 
     other_percent = (1 - dem_percent) * remaining_ratio
+    # add other percent to dem percent and subtract it from repub percent
     dem_percent += other_percent
+    repub_percent -= other_percent
 
-    biden_lead_projected = dem_percent - (county_data["republican_voters"] / tot_voters)
+    biden_lead_projected = dem_percent - repub_percent
 
     projected_votes = county_data["ballots_remaining"] * biden_lead_projected
     print(county_data["county"], county_data["ballots_remaining"], " ballots remaining with a ", biden_lead_projected * 100, " percent lead. Projected votes: ", projected_votes)
@@ -54,4 +58,4 @@ for i, county_data in full_data.iterrows():
 
 remaining_ballots = full_data["ballots_remaining"].sum()
 print("total Pennsylvania remaining ballots: ", remaining_ballots)
-print("with our assumptions and your inputted ratio,with our assumptions and your inputted ratio,  biden would get ", (remaining_ballots + remaining_sum) * 100 / (2 * remaining_ballots), "percent of remaining votes in this case.")
+print("with our assumptions and your inputted ratio, biden would get ", (remaining_ballots + remaining_sum) * 100 / (2 * remaining_ballots), "percent of remaining votes in this case.")

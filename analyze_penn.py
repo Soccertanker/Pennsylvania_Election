@@ -48,6 +48,7 @@ for i, county_data in full_data.iterrows():
 
     biden_lead_projected = dem_percent - repub_percent
 
+
     projected_votes = county_data["ballots_remaining"] * biden_lead_projected
     print(county_data["county"], county_data["ballots_remaining"], " ballots remaining with a ", biden_lead_projected * 100, " percent lead. Projected votes: ", projected_votes)
 
